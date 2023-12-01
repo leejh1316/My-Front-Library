@@ -8,5 +8,5 @@ export interface Pagination {
   customElement?: Element;
   clickToMove: boolean;
 }
-export type SliderType = "free" | "center" | 'left';
+export type SliderType = "free" | "center" | 'left' | 'default';
 export type Direction = "horizontal" | "vertical";

@@ -3,10 +3,12 @@ import { computed, onMounted, ref, watchEffect } from "vue";
 import { SlideOption } from "../type";
 import FreeSlider from "./Sliders/FreeSlider.vue";
 import LeftSlider from "./Sliders/LeftSlider.vue";
+import DefaultSlider from "./Sliders/DefaultSlider.vue";
 const props = defineProps<{ slideOption: SlideOption }>();
 const sliderComponent = computed(()=>{
   if(props.slideOption.sliderType === 'free') return FreeSlider
   else if(props.slideOption.sliderType === 'left') return LeftSlider
+  else if(props.slideOption.sliderType === 'default') return DefaultSlider
 })
 </script>
 <template>

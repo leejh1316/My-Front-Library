@@ -42,7 +42,7 @@ import Popup from "./component/Popup.vue";
 import { Options, Instance } from "./types";
 export * from './popup-core'
 export const VuePopupPlugin = {
-  install: function (app: any, options?: any) {
+   install(app:any){
     app.component("Popup", Popup);
     app.directive(
       "popup",

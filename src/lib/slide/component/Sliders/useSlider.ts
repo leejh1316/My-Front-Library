@@ -58,7 +58,7 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
   function initializeSlideStart(event: MouseEvent | TouchEvent) {
     toggleEventListeners(true);
     isSlideTransition.value = false;
-    startCoord.value = { x: event.pageX, y: event.pageY };
+    startCoord.value = { x: event?.pageX ?? event.touches[0].pageX, y: event.pageY };
     startTime.value = Date.now();
     countSlideItem.value = elSlider.value.childElementCount;
     onSlideStart.value();
@@ -67,7 +67,7 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
   function finalizeSlideEnd(event: MouseEvent | TouchEvent) {
     endTime.value = Date.now();
     directionOfSlide.value =
-    endCoord.value.x > currentCoord.value.x ? "left" : "right";
+    moveCoord.value.x < 0 ? "left" : "right";
     endCoord.value = { x: currentCoord.value.x, y: currentCoord.value.y };
     slideVelocity.value = calculateVelocity();
     onSlideEnd.value();
