@@ -69,6 +69,7 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
     isSlideTransition.value = false;
     startCoord.value = { x: event?.pageX ?? event.touches[0].pageX, y: event?.pageY ?? event.touches[0].pageY };
     startTime.value = Date.now();
+    sliderBounds.value = calculateSliderBounds()
     countSlideItem.value = elSlider.value.childElementCount;
     onSlideStart.value();
   }
@@ -117,9 +118,7 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
       maxLeft: 0,
       maxRight:
         offsetWidth < parentOffsetWidth
-          ? offsetWidth -
-            elSlider.value?.children[elSlider.value.children.length - 1]
-              .offsetWidth
+          ? 0
           : parentOffsetWidth - offsetWidth,
     };
   }
@@ -156,9 +155,9 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
     }
   }
 
-  watch(countSlideItem, () => {
-    sliderBounds.value = calculateSliderBounds();
-  });
+  // watch(countSlideItem, () => {
+  //   sliderBounds.value = calculateSliderBounds();
+  // });
 
   return {
     elSlider,

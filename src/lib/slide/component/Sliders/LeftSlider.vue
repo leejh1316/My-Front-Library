@@ -18,7 +18,6 @@ const {
 } = useSlider(sliderElement, props.option);
 const currentSlide = ref(0);
 
-const MOVE_THRESHOLD = 150;
 const VELOCITY_THRESHOLD = 3;
 
 const clampIndex = (index: number, max: number) => {
