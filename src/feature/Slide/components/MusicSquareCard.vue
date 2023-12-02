@@ -25,7 +25,7 @@ function getRandomSongTitle() {
 
 </script>
 <template>
-    <div class="music-square-card">
+    <div class="music-square-card" @click="console.log('music click')">
         <div class="square">
             <div class="play-button">
                 <Icon icon="fa-play"></Icon>

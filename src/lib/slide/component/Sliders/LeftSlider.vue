@@ -106,7 +106,12 @@ onSlideEnd.value = () => {
   flex-wrap: nowrap;
   min-height: 100%;
   &--transition {
-    transition: 0.3s linear all;
+    transition: 0.25s linear all;
+  }
+}
+@media (max-width: 380px) {
+  .slider--transition{
+    transition: 0.2s ease all;
   }
 }
 </style>

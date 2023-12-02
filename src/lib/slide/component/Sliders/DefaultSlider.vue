@@ -33,7 +33,7 @@ const {currentCoord, initializeSlideStart} = useSlider(sliderElement, props.opti
   flex-wrap: nowrap;
   min-height: 100%;
   &--transition {
-    transition: 0.2s linear all;
+    transition: 0.25s linear all;
   }
 }
 </style>

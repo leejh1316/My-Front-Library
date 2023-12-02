@@ -1,5 +1,6 @@
 import { MaybeRef, computed, ref, unref, watch } from "vue";
 import {SlideOption} from '../../type/SlideOption'
+
 const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
   const elSlider = computed(() => unref(element));
   const startTime = ref(0);
@@ -19,6 +20,7 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
   const directionOfSlide = ref<"left" | "right" | "up" | "down">();
   const isMoved = ref(false);
   const isClampLimit = ref(false)
+  const canSliderMove = ref(undefined)
   const onSlideEnd = ref<() => any>(() => {});
   const onSlideMove = ref<() => any>(() => {});
   const onSlideStart = ref<() => any>(() => {});
@@ -32,22 +34,26 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
       y: endCoord.value.y - startCoord.value.y,
     };
   });
-  function handleMove(moveX: number) {
-    isMoved.value = true;
-    moveCoord.value.x = moveX
-    currentCoord.value.x = endCoord.value.x + moveX;
-    clampSlideCoord();
-    onSlideMove.value();
+  function handleMove(moveX: number, moveY:number, event: MouseEvent | TouchEvent) {
+    if(canSliderMove.value === undefined){
+      canSliderMove.value = Math.abs(moveX) > Math.abs(moveY)
+    }
+    else if(canSliderMove.value){
+      event.preventDefault()
+      isMoved.value = true;
+      moveCoord.value.x = moveX
+      currentCoord.value.x = endCoord.value.x + moveX;
+      clampSlideCoord();
+      onSlideMove.value();
+    }
   }
 
   function handleMouseMove(event: MouseEvent) {
-    event.preventDefault();
-    handleMove(event.pageX - startCoord.value.x);
+    handleMove(event.pageX - startCoord.value.x, event.pageX - startCoord.value.y - startCoord.value.y, event);
   }
 
   function handleTouchMove(event: TouchEvent) {
-    event.preventDefault();
-    handleMove(event.touches[0].pageX - startCoord.value.x);
+    handleMove(event.touches[0].pageX - startCoord.value.x, event.touches[0].pageY - startCoord.value.y, event);
   }
 
   function toggleEventListeners(add: boolean) {
@@ -57,11 +63,11 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
     window[method]("mouseup", finalizeSlideEnd);
     window[method]("touchend", finalizeSlideEnd);
   }
-
+  
   function initializeSlideStart(event: MouseEvent | TouchEvent) {
     toggleEventListeners(true);
     isSlideTransition.value = false;
-    startCoord.value = { x: event?.pageX ?? event.touches[0].pageX, y: event.pageY };
+    startCoord.value = { x: event?.pageX ?? event.touches[0].pageX, y: event?.pageY ?? event.touches[0].pageY };
     startTime.value = Date.now();
     countSlideItem.value = elSlider.value.childElementCount;
     onSlideStart.value();
@@ -81,6 +87,7 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
       resetSlideCoordOfBoundary();
     }
     isEndCoordOver.value = false
+    canSliderMove.value = undefined
     toggleEventListeners(false);
   }
 
@@ -91,7 +98,7 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
     transitionTimerId.value = setTimeout(() => {
       elSlider.value?.classList.remove("slider--transition");
       isSlideTransition.value = false;
-    }, 301);
+    }, 250);
   }
 
   function calculateVelocity() {

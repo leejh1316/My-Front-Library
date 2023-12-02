@@ -37,6 +37,12 @@ import MusicQuick from './components/MusicQuick.vue'
   padding-top:120px;
   margin-left: 80px;
 }
+@media (max-width: 380px) {
+  #slide-demo{
+    padding-top: 80px;
+    margin-left:20px;
+  }
+}
 .section{
   position: relative;
   margin-bottom: 80px;
@@ -65,6 +71,7 @@ import MusicQuick from './components/MusicQuick.vue'
   display: flex;
   flex-direction: column;
   gap:14px;
+  min-width: 320px;
   max-width: 550px;
   width: 100%;
 }

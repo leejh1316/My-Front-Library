@@ -23,10 +23,10 @@ const {
 const animationFrameId = ref(0);
 
 function animateSlideDeceleration() {
-  const friction = 0.95; // 감속계수
+  const friction = 0.98; // 감속계수
   let displacement = slideVelocity.value;
 
-  if (!isClampLimit.value && Math.abs(displacement) > 0.5) {
+  if (!isClampLimit.value && Math.abs(displacement) > 0.45) {
     currentCoord.value.x += displacement;
     endCoord.value.x = currentCoord.value.x;
     slideVelocity.value *= friction;
@@ -85,7 +85,7 @@ onSlideEnd.value = () => {
   flex-wrap: nowrap;
   min-height: 100%;
   &--transition {
-    transition: 0.3s linear all;
+    transition: 0.2s linear all;
   }
 }
 </style>
