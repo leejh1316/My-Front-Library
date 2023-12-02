@@ -18,10 +18,13 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
   const isSlideTransition = ref<boolean>(false);
   const directionOfSlide = ref<"left" | "right" | "up" | "down">();
   const isMoved = ref(false);
+  const isClampLimit = ref(false)
   const onSlideEnd = ref<() => any>(() => {});
   const onSlideMove = ref<() => any>(() => {});
   const onSlideStart = ref<() => any>(() => {});
   const slideVelocity = ref(0);
+  const transitionTimerId = ref();
+  const isEndCoordOver = ref(false)
   const deltaTime = computed(() => endTime.value - startTime.value);
   const deltaMove = computed(() => {
     return {
@@ -66,21 +69,26 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
 
   function finalizeSlideEnd(event: MouseEvent | TouchEvent) {
     endTime.value = Date.now();
-    directionOfSlide.value =
-    moveCoord.value.x < 0 ? "left" : "right";
+    directionOfSlide.value = moveCoord.value.x < 0 ? "left" : "right";
     endCoord.value = { x: currentCoord.value.x, y: currentCoord.value.y };
+    checkEndCoordOver()
     slideVelocity.value = calculateVelocity();
     onSlideEnd.value();
     isMoved.value = false;
+    isClampLimit.value = false;
     moveCoord.value.x = 0
-    resetSlideCoordOfBoundary();
+    if(option.sliderType !== 'free'){
+      resetSlideCoordOfBoundary();
+    }
+    isEndCoordOver.value = false
     toggleEventListeners(false);
   }
 
   function startSlideTransition() {
+    clearTimeout(transitionTimerId.value)
     isSlideTransition.value = true;
     elSlider.value?.classList.add("slider--transition");
-    setTimeout(() => {
+    transitionTimerId.value = setTimeout(() => {
       elSlider.value?.classList.remove("slider--transition");
       isSlideTransition.value = false;
     }, 301);
@@ -115,7 +123,13 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
       60,
       Math.max(currentCoord.value.x, maxRightLimit)
     );
+    isClampLimit.value = currentCoord.value.x === 60 || currentCoord.value.x === maxRightLimit
   }
+
+  function checkEndCoordOver() {
+    const { maxLeft, maxRight } = sliderBounds.value;
+    isEndCoordOver.value = endCoord.value.x > maxLeft || endCoord.value.x < maxRight;
+}
 
   function resetSlideCoordOfBoundary() {
     let isLimit = false;
@@ -157,6 +171,8 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
     slideVelocity,
     handleMove,
     startSlideTransition,
+    isClampLimit,
+    isEndCoordOver,
     onSlideMove,
     onSlideEnd,
     onSlideStart,

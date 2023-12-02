@@ -14,6 +14,8 @@ const {
   endCoord,
   initializeSlideStart,
   isMoved,
+  isClampLimit,
+  isEndCoordOver,
   slideVelocity,
   clampSlideCoord,
   resetSlideCoordOfBoundary,
@@ -24,21 +26,23 @@ function animateSlideDeceleration() {
   const friction = 0.95; // 감속계수
   let displacement = slideVelocity.value;
 
-  if (Math.abs(displacement) > 0.5) {
+  if (!isClampLimit.value && Math.abs(displacement) > 0.5) {
     currentCoord.value.x += displacement;
     endCoord.value.x = currentCoord.value.x;
     slideVelocity.value *= friction;
     clampSlideCoord();
     animationFrameId.value = requestAnimationFrame(animateSlideDeceleration);
   }
-  resetSlideCoordOfBoundary();
+  else{
+    resetSlideCoordOfBoundary()
+  }
 }
 
 onSlideStart.value = () => {
   cancelAnimationFrame(animationFrameId.value);
 };
 onSlideEnd.value = () => {
-  if (!isMoved.value) {
+  if (!isMoved.value || isEndCoordOver.value) {
     resetSlideCoordOfBoundary();
     return;
   }

@@ -10,7 +10,7 @@ import MusicQuick from './components/MusicQuick.vue'
       </div>
       <div class="over-container">
         <Slide :slide-option="{sliderType:'free', gap:16}">
-          <SlideItem v-for="_, of 14" class="music-cards-container">
+          <SlideItem v-for="_, of 20" class="music-cards-container">
             <MusicSquareCard ></MusicSquareCard>
             <MusicSquareCard ></MusicSquareCard>
           </SlideItem>
@@ -24,7 +24,7 @@ import MusicQuick from './components/MusicQuick.vue'
       </div>
       <div class="over-container">
         <Slide :slide-option="{sliderType:'left', gap:16}">
-          <SlideItem v-for="_, of 8" class="music-quicks-container">
+          <SlideItem v-for="_, of 10" class="music-quicks-container">
             <MusicQuick v-for="_, of 4"></MusicQuick>
           </SlideItem>
         </Slide>

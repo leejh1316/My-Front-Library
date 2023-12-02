@@ -15,7 +15,6 @@ const {
   directionOfSlide,
   slideVelocity,
   onSlideEnd,
-  onSlideMove,
 } = useSlider(sliderElement, props.option);
 const currentSlide = ref(0);
 
