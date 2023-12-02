@@ -1,32 +1,32 @@
 import { MaybeRef, computed, ref, unref, watch } from "vue";
-import {SlideOption} from '../../type/SlideOption'
+import { SlideOption } from "../../type/SlideOption";
 
-const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
+const useSlider = (element: MaybeRef<HTMLElement>, option: SlideOption) => {
   const elSlider = computed(() => unref(element));
   const startTime = ref(0);
   const endTime = ref(0);
   const startCoord = ref({ x: 0, y: 0 });
   const currentCoord = ref({ x: 0, y: 0 });
   const endCoord = ref({ x: 0, y: 0 });
-  const moveCoord = ref({x:0,y:0})
+  const moveCoord = ref({ x: 0, y: 0 });
   const sliderBounds = ref<{
     width: number;
     height: number;
     maxLeft: number;
-    maxRight: number;
+    minLeft: number;
   }>(calculateSliderBounds());
   const countSlideItem = ref(elSlider.value?.childElementCount ?? 0);
   const isSlideTransition = ref<boolean>(false);
   const directionOfSlide = ref<"left" | "right" | "up" | "down">();
   const isMoved = ref(false);
-  const isClampLimit = ref(false)
-  const canSliderMove = ref(undefined)
+  const isClampLimit = ref(false);
+  const canSliderMove = ref(undefined);
   const onSlideEnd = ref<() => any>(() => {});
   const onSlideMove = ref<() => any>(() => {});
   const onSlideStart = ref<() => any>(() => {});
   const slideVelocity = ref(0);
   const transitionTimerId = ref();
-  const isEndCoordOver = ref(false)
+  const isEndCoordOver = ref(false);
   const deltaTime = computed(() => endTime.value - startTime.value);
   const deltaMove = computed(() => {
     return {
@@ -34,14 +34,17 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
       y: endCoord.value.y - startCoord.value.y,
     };
   });
-  function handleMove(moveX: number, moveY:number, event: MouseEvent | TouchEvent) {
-    if(canSliderMove.value === undefined){
-      canSliderMove.value = Math.abs(moveX) > Math.abs(moveY)
-    }
-    else if(canSliderMove.value){
-      event.preventDefault()
+  function handleMove(
+    moveX: number,
+    moveY: number,
+    event: MouseEvent | TouchEvent
+  ) {
+    if (canSliderMove.value === undefined) {
+      canSliderMove.value = Math.abs(moveX) > Math.abs(moveY);
+    } else if (canSliderMove.value) {
+      event.preventDefault();
       isMoved.value = true;
-      moveCoord.value.x = moveX
+      moveCoord.value.x = moveX;
       currentCoord.value.x = endCoord.value.x + moveX;
       clampSlideCoord();
       onSlideMove.value();
@@ -49,11 +52,19 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
   }
 
   function handleMouseMove(event: MouseEvent) {
-    handleMove(event.pageX - startCoord.value.x, event.pageX - startCoord.value.y - startCoord.value.y, event);
+    handleMove(
+      event.pageX - startCoord.value.x,
+      event.pageX - startCoord.value.y - startCoord.value.y,
+      event
+    );
   }
 
   function handleTouchMove(event: TouchEvent) {
-    handleMove(event.touches[0].pageX - startCoord.value.x, event.touches[0].pageY - startCoord.value.y, event);
+    handleMove(
+      event.touches[0].pageX - startCoord.value.x,
+      event.touches[0].pageY - startCoord.value.y,
+      event
+    );
   }
 
   function toggleEventListeners(add: boolean) {
@@ -63,13 +74,16 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
     window[method]("mouseup", finalizeSlideEnd);
     window[method]("touchend", finalizeSlideEnd);
   }
-  
+
   function initializeSlideStart(event: MouseEvent | TouchEvent) {
     toggleEventListeners(true);
     isSlideTransition.value = false;
-    startCoord.value = { x: event?.pageX ?? event.touches[0].pageX, y: event?.pageY ?? event.touches[0].pageY };
+    startCoord.value = {
+      x: event?.pageX ?? event.touches[0].pageX,
+      y: event?.pageY ?? event.touches[0].pageY,
+    };
     startTime.value = Date.now();
-    sliderBounds.value = calculateSliderBounds()
+    sliderBounds.value = calculateSliderBounds();
     countSlideItem.value = elSlider.value.childElementCount;
     onSlideStart.value();
   }
@@ -78,22 +92,22 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
     endTime.value = Date.now();
     directionOfSlide.value = moveCoord.value.x < 0 ? "left" : "right";
     endCoord.value = { x: currentCoord.value.x, y: currentCoord.value.y };
-    checkEndCoordOver()
+    checkEndCoordOver();
     slideVelocity.value = calculateVelocity();
     onSlideEnd.value();
     isMoved.value = false;
     isClampLimit.value = false;
-    moveCoord.value.x = 0
-    if(option.sliderType !== 'free'){
+    moveCoord.value.x = 0;
+    if (option.sliderType !== "free") {
       resetSlideCoordOfBoundary();
     }
-    isEndCoordOver.value = false
-    canSliderMove.value = undefined
+    isEndCoordOver.value = false;
+    canSliderMove.value = undefined;
     toggleEventListeners(false);
   }
 
   function startSlideTransition() {
-    clearTimeout(transitionTimerId.value)
+    clearTimeout(transitionTimerId.value);
     isSlideTransition.value = true;
     elSlider.value?.classList.add("slider--transition");
     transitionTimerId.value = setTimeout(() => {
@@ -103,49 +117,52 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
   }
 
   function calculateVelocity() {
-    const speed = !!moveCoord.value.x ? moveCoord.value.x / (deltaTime.value * 0.1) : 0
-    return speed
+    const speed = !!moveCoord.value.x
+      ? moveCoord.value.x / (deltaTime.value * 0.1)
+      : 0;
+    return speed;
   }
+  
   function calculateSliderBounds() {
     const offsetWidth = Array.from(elSlider.value?.children ?? []).reduce(
       (width, child) => width + (child?.offsetWidth ?? 0) + (option?.gap ?? 0),
-      (-option?.gap ?? 0)
+      -option?.gap ?? 0
     );
     const parentOffsetWidth = elSlider.value?.parentElement?.offsetWidth || 0;
     return {
       width: offsetWidth,
       height: elSlider.value?.offsetHeight,
       maxLeft: 0,
-      maxRight:
-        offsetWidth < parentOffsetWidth
-          ? 0
-          : parentOffsetWidth - offsetWidth,
+      minLeft:
+        offsetWidth < parentOffsetWidth ? 0 : parentOffsetWidth - offsetWidth,
     };
   }
 
   function clampSlideCoord() {
-    const maxRightLimit = sliderBounds.value.maxRight - 60;
+    const minLeftLimit = sliderBounds.value.minLeft - 60;
     currentCoord.value.x = Math.min(
       60,
-      Math.max(currentCoord.value.x, maxRightLimit)
+      Math.max(currentCoord.value.x, minLeftLimit)
     );
-    isClampLimit.value = currentCoord.value.x === 60 || currentCoord.value.x === maxRightLimit
+    isClampLimit.value =
+      currentCoord.value.x === 60 || currentCoord.value.x === minLeftLimit;
   }
 
   function checkEndCoordOver() {
-    const { maxLeft, maxRight } = sliderBounds.value;
-    isEndCoordOver.value = endCoord.value.x > maxLeft || endCoord.value.x < maxRight;
-}
+    const { maxLeft, minLeft } = sliderBounds.value;
+    isEndCoordOver.value =
+      endCoord.value.x > maxLeft || endCoord.value.x < minLeft;
+  }
 
   function resetSlideCoordOfBoundary() {
     let isLimit = false;
-    const { maxLeft, maxRight } = sliderBounds.value;
+    const { maxLeft, minLeft } = sliderBounds.value;
 
     if (endCoord.value.x > maxLeft) {
       endCoord.value.x = maxLeft;
       isLimit = true;
-    } else if (endCoord.value.x < maxRight) {
-      endCoord.value.x = maxRight;
+    } else if (endCoord.value.x < minLeft) {
+      endCoord.value.x = minLeft;
       isLimit = true;
     }
 
