@@ -25,7 +25,7 @@ const {currentCoord, initializeSlideStart} = useSlider(sliderElement, props.opti
 </template>
 <style scoped lang="scss">
 .slider {
-  position: absolute;
+  position: relative;
   top: 0px;
   left: 0px;
   display: flex;

@@ -20,9 +20,6 @@ const sliderComponent = computed(()=>{
 </template>
 <style scoped lang="scss">
 .slide-container {
-  position: relative;
-  overflow: hidden;
-  width: 100%;
   height: 100%;
 }
 </style>

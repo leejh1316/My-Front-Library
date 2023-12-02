@@ -66,14 +66,14 @@ onSlideEnd.value = () => {
 </template>
 <style scoped lang="scss">
 .slider-container {
-  position: absolute;
+  position: relative;
   top: 0px;
   left: 0px;
   min-width: 100%;
   min-height: 100%;
 }
 .slider {
-  position: absolute;
+  position: relative;
   top: 0px;
   left: 0px;
   display: flex;
@@ -81,7 +81,7 @@ onSlideEnd.value = () => {
   flex-wrap: nowrap;
   min-height: 100%;
   &--transition {
-    transition: 0.2s linear all;
+    transition: 0.3s linear all;
   }
 }
 </style>

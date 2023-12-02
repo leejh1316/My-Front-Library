@@ -26,107 +26,13 @@ watch(popEl, () => {
 //     placement: "right-top",
 //   });
 // })
-const items = ref(['a','b','c','d','e'])
-const slideOption :SlideOption ={
-  sliderType:'left',
-  gap:50
-}
-const add = () => {
-  items.value.push('c')
-}
 </script>
 
 <template>
-  <div class="page-layout">
-    <!-- <div class="box a" ref="refEl">
-
-    </div>
-    <div class="box-small" ref="popEl"></div> -->
-  <button @click="add">slide add</button>
-    <div class="wrap">
-      <Slide :slide-option="slideOption">
-        <SlideItem v-for="item,index of items" class="hum" :class="`${item}`">
-          <div class="content-container">
-            <div class="row">
-              <div class="card"></div>
-              <div class="content">
-                <div class="title">심심할때 듣는 음악1</div>
-                <div class="author">심심이</div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="card"></div>
-              <div class="content">
-                <div class="title">30분 플레무리스트</div>
-                <div class="author">로봇</div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="card">대충 썸네일</div>
-              <div class="content">
-                <div class="title"></div>
-                <div class="author"></div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="card"></div>
-              <div class="content">
-                <div class="title"></div>
-                <div class="author"></div>
-              </div>
-            </div>
-          </div>
-        </SlideItem>
-      </Slide>
-      <Slide :slide-option="slideOption">
-        <SlideItem class="box a">
-          <div>hello</div>
-        </SlideItem>
-      </Slide>
-    </div>
-
-    <div class="wrap">
-      <Slide :slide-option="{sliderType:'free', gap:12}">
-        <SlideItem class="big-card"></SlideItem>
-        <SlideItem class="big-card"></SlideItem>
-        <SlideItem class="big-card"></SlideItem>
-        <SlideItem class="big-card"></SlideItem>
-        <SlideItem class="big-card"></SlideItem>
-        <SlideItem class="big-card"></SlideItem>
-        <SlideItem class="big-card"></SlideItem>
-        <SlideItem class="big-card"></SlideItem>
-        <SlideItem class="big-card"></SlideItem>
-        <SlideItem class="big-card"></SlideItem>
-      </Slide>
-    </div>
-    <div class="wrap">
-      <Slide :slide-option="{sliderType:'free', gap:12}">
-        <SlideItem class="box a"></SlideItem>
-        <SlideItem class="box b"></SlideItem>
-        <SlideItem class="box c"></SlideItem>
-        <SlideItem class="box d"></SlideItem>
-        <SlideItem class="box e"></SlideItem>
-        <SlideItem class="box a"></SlideItem>
-        <SlideItem class="box b"></SlideItem>
-        <SlideItem class="box c"></SlideItem>
-        <SlideItem class="box d"></SlideItem>
-        <SlideItem class="box e"></SlideItem>
-      </Slide>
-    </div>
-    <div class="wrap">
-      <Slide :slide-option="{sliderType:'left', gap:10}">
-        <SlideItem class="full a">1</SlideItem>
-        <SlideItem class="full d">2</SlideItem>
-        <SlideItem class="full e">3</SlideItem>
-        <SlideItem class="full b">4</SlideItem>
-        <SlideItem class="full c">5</SlideItem>
-        <SlideItem class="full e">6</SlideItem>
-      </Slide>
-    </div>
-  </div>
 </template>
 
 <style scoped lang="scss">
+
 .big-card{
   width: 150px;
   height: 150px;

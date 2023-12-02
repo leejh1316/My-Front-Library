@@ -83,7 +83,7 @@ const useSlider = (element: MaybeRef<HTMLElement>, option:SlideOption) => {
     setTimeout(() => {
       elSlider.value?.classList.remove("slider--transition");
       isSlideTransition.value = false;
-    }, 200);
+    }, 301);
   }
 
   function calculateVelocity() {
