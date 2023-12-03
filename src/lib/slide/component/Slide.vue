@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watchEffect } from "vue";
+import { computed } from "vue";
 import { SlideOption } from "../type";
 import FreeSlider from "./Sliders/FreeSlider.vue";
 import LeftSlider from "./Sliders/LeftSlider.vue";
@@ -20,6 +20,6 @@ const sliderComponent = computed(()=>{
 </template>
 <style scoped lang="scss">
 .slide-container {
-  height: 100%;
+  height: inherit;
 }
 </style>

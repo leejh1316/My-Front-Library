@@ -74,7 +74,7 @@ onSlideEnd.value = () => {
   top: 0px;
   left: 0px;
   min-width: 100%;
-  min-height: 100%;
+  height: inherit;
 }
 .slider {
   position: relative;
@@ -83,7 +83,7 @@ onSlideEnd.value = () => {
   display: flex;
   min-width: 100%;
   flex-wrap: nowrap;
-  min-height: 100%;
+  height: inherit;
   &--transition {
     transition: 0.2s linear all;
   }
