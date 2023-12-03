@@ -54,7 +54,7 @@ const useSlider = (element: MaybeRef<HTMLElement>, option: SlideOption) => {
   function handleMouseMove(event: MouseEvent) {
     handleMove(
       event.pageX - startCoord.value.x,
-      event.pageX - startCoord.value.y - startCoord.value.y,
+      event.pageY - startCoord.value.y,
       event
     );
   }
