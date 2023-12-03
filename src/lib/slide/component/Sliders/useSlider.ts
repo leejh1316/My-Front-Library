@@ -42,7 +42,6 @@ const useSlider = (element: MaybeRef<HTMLElement>, option: SlideOption) => {
     if (canSliderMove.value === undefined) {
       canSliderMove.value = Math.abs(moveX) > Math.abs(moveY);
     } else if (canSliderMove.value) {
-      event.preventDefault();
       isMoved.value = true;
       moveCoord.value.x = moveX;
       currentCoord.value.x = endCoord.value.x + moveX;
@@ -52,6 +51,7 @@ const useSlider = (element: MaybeRef<HTMLElement>, option: SlideOption) => {
   }
 
   function handleMouseMove(event: MouseEvent) {
+    if(canSliderMove.value) event.preventDefault()
     handleMove(
       event.pageX - startCoord.value.x,
       event.pageY - startCoord.value.y,
@@ -60,6 +60,7 @@ const useSlider = (element: MaybeRef<HTMLElement>, option: SlideOption) => {
   }
 
   function handleTouchMove(event: TouchEvent) {
+    if(canSliderMove.value) event.preventDefault()
     handleMove(
       event.touches[0].pageX - startCoord.value.x,
       event.touches[0].pageY - startCoord.value.y,
